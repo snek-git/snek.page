@@ -175,18 +175,22 @@
   <a href="https://x.com/aabx315" class="art-credit">art by aabx315</a>
   <script>
     const darkImages = ['img/lilith1.webp', 'img/lilith2.webp'];
-    const lightImages = ['img/lilith1_light.webp', 'img/lilith2_light.webp'];
+    const lightImages = ['img/lilith1_light.webp', 'img/lilith2_light.webp', 'img/lilith3_light.webp'];
     const bgImg = document.getElementById('bg-img');
     const bgArt = document.querySelector('.bg-art');
     const artCredit = document.querySelector('.art-credit');
     const themeToggle = document.getElementById('theme-toggle');
 
-    let imageIndex = Math.floor(Math.random() * 2);
     let isLight = localStorage.getItem('theme') === 'light';
+
+    function getRandomImage() {
+      const images = isLight ? lightImages : darkImages;
+      return images[Math.floor(Math.random() * images.length)];
+    }
 
     function applyTheme() {
       document.documentElement.classList.toggle('light', isLight);
-      bgImg.src = isLight ? lightImages[imageIndex] : darkImages[imageIndex];
+      bgImg.src = getRandomImage();
       themeToggle.textContent = isLight ? 'dark' : 'light';
     }
 
