@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>film - snek.page</title>
+  <style>
+    body {
+      padding: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .back-link {
+      margin-bottom: 1rem;
+    }
+    h1 {
+      margin-bottom: 1.5rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+    .grid img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .grid img:hover {
+      transform: scale(1.02);
+    }
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+    .lightbox.active {
+      display: flex;
+    }
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 30px;
+      cursor: pointer;
+    }
+    .lightbox-prev, .lightbox-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 40px;
+      cursor: pointer;
+      padding: 1rem;
+      user-select: none;
+    }
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
+  </style>
+</head>
+<body>
+  <div class="back-link"><a href="/">← back</a></div>
+  <h1>film</h1>
+  <div class="grid" id="grid">
+    <img src="img/film/thumbs/karmir_218765.jpg" data-full="img/film/karmir_218765.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218786.jpg" data-full="img/film/karmir_218786.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218792.jpg" data-full="img/film/karmir_218792.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218799.jpg" data-full="img/film/karmir_218799.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218811.jpg" data-full="img/film/karmir_218811.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218813.jpg" data-full="img/film/karmir_218813.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218818.jpg" data-full="img/film/karmir_218818.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218825.jpg" data-full="img/film/karmir_218825.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218830.jpg" data-full="img/film/karmir_218830.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218832.jpg" data-full="img/film/karmir_218832.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218833.jpg" data-full="img/film/karmir_218833.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218835.jpg" data-full="img/film/karmir_218835.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218837.jpg" data-full="img/film/karmir_218837.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218839.jpg" data-full="img/film/karmir_218839.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218840.jpg" data-full="img/film/karmir_218840.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218848.jpg" data-full="img/film/karmir_218848.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218851.jpg" data-full="img/film/karmir_218851.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218862.jpg" data-full="img/film/karmir_218862.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218865.jpg" data-full="img/film/karmir_218865.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218867.jpg" data-full="img/film/karmir_218867.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218874.jpg" data-full="img/film/karmir_218874.jpg" alt="">
+    <img src="img/film/thumbs/karmir_218881.jpg" data-full="img/film/karmir_218881.jpg" alt="">
+  </div>
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <span class="lightbox-prev">&#10094;</span>
+    <img id="lightbox-img" src="" alt="">
+    <span class="lightbox-next">&#10095;</span>
+  </div>
+  <script>
+    const grid = document.getElementById('grid');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const images = Array.from(grid.querySelectorAll('img'));
+    let currentIndex = 0;
+
+    function showImage(index) {
+      currentIndex = (index + images.length) % images.length;
+      lightboxImg.src = images[currentIndex].dataset.full;
+    }
+
+    grid.addEventListener('click', (e) => {
+      if (e.target.tagName === 'IMG') {
+        currentIndex = images.indexOf(e.target);
+        lightboxImg.src = e.target.dataset.full;
+        lightbox.classList.add('active');
+      }
+    });
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox || e.target.classList.contains('lightbox-close')) {
+        lightbox.classList.remove('active');
+      }
+    });
+
+    document.querySelector('.lightbox-prev').addEventListener('click', (e) => {
+      e.stopPropagation();
+      showImage(currentIndex - 1);
+    });
+
+    document.querySelector('.lightbox-next').addEventListener('click', (e) => {
+      e.stopPropagation();
+      showImage(currentIndex + 1);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape') lightbox.classList.remove('active');
+      if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+      if (e.key === 'ArrowRight') showImage(currentIndex + 1);
+    });
+  </script>
+</body>
+</html>

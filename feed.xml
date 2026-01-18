@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>snek.page</title>
+    <link>https://snek.page</link>
+    <description>Feliks / snek - ai engineer, games, thoughts</description>
+    <language>en</language>
+    <item>
+      <title>First Post</title>
+      <link>https://snek.page/posts/first-post.html</link>
+      <pubDate>Sun, 18 Jan 2026 00:00:00 GMT</pubDate>
+      <description>This is a test post with bold, italic, and a link.</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>First Post - snek.page</title>
+  <link rel="alternate" type="application/rss+xml" title="snek.page" href="/feed.xml">
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
+  <style>
+    body { padding: 1rem; max-width: 600px; margin: 0 auto; }
+    pre { background: #f4f4f4; padding: 1rem; overflow-x: auto; }
+    code { background: #f4f4f4; padding: 0.2rem 0.4rem; }
+    pre code { padding: 0; }
+    img { max-width: 100%; height: auto; }
+    iframe { max-width: 100%; }
+    .back-link { margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="back-link"><a href="/">← back</a></div>
+  <article id="content"></article>
+  <script>
+    const md = window.markdownit({ html: true, linkify: true, breaks: true });
+    fetch('first-post.md')
+      .then(r => r.text())
+      .then(text => {
+        const content = text.replace(/^---\n[\s\S]*?\n---\n*/, '');
+        document.getElementById('content').innerHTML = md.render(content);
+      });
+  </script>
+</body>
+</html>

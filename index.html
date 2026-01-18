@@ -4,16 +4,134 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>snek.page</title>
+  <link rel="alternate" type="application/rss+xml" title="snek.page" href="/feed.xml">
+  <style>
+    body {
+      padding: 1rem;
+      max-width: 900px;
+    }
+    .bg-art {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .bg-art img {
+      height: auto;
+    }
+    .bg-art.at-bottom {
+      position: static;
+      margin-top: 2rem;
+    }
+    .art-credit {
+      position: fixed;
+      bottom: 5px;
+      right: 10px;
+      font-size: 10px;
+    }
+    .art-credit.at-bottom {
+      position: static;
+      display: block;
+      text-align: right;
+    }
+    section {
+      margin: 2rem 0;
+    }
+    section > *:not(h3) {
+      margin-left: 1rem;
+    }
+    h3 {
+      margin-bottom: 0.5rem;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #ccc;
+      margin: 2rem 0;
+    }
+    .intro {
+      margin-bottom: 1.5rem;
+    }
+    .columns {
+      display: flex;
+      gap: 3rem;
+    }
+    .col-main {
+      flex: 1;
+    }
+    .col-side {
+      width: 400px;
+      flex-shrink: 0;
+    }
+    @media (max-width: 800px) {
+      .columns {
+        flex-direction: column;
+      }
+      .col-side {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
-  <p>hello, i am Feliks or snek</p>
-  <p>ai engineer. into fate, souls games, and nier. sometimes i think about game design.</p>
-  <p><a href="https://github.com/snek-git">github</a></p>
-  <p>you can also follow my <a href="https://t.me/+kXph_tFDsvo4NjUy">tg</ channel</p>>  
-  <h3>projects</h3>
-    <p><a href="https://music-craft.snek.page/">music-craft</a>  a discovery game for finding new music through combinations</p>
-  <h3>horrible games i've worked on during game jams</h3>>
-    <p><a href="https://www.youtube.com/watch?v=_iuoB34YHeE">overgrown</a>: a puzzle game where you have to control where roots grow by placing stones</p>
-    <p><a href="https://www.youtube.com/watch?v=3F5XY2uP92A">a "funny" detective visual novel</a></p>
+  <div class="intro">
+    <p>i am Feliks or snek</p>
+    <p>ai engineer. into type moon, retro tech, analog media, souls and nier games. sometimes i think about game design.</p>
+    <p>i also occasionally take <a href="/film.html">film photos</a></p>
+    <p><a href="https://github.com/snek-git">github</a> · <a href="https://x.com/0xEntropy_">twitter</a> · <a href="https://t.me/+kXph_tFDsvo4NjUy">telegram</a></p>
+  </div>
+
+  <hr>
+
+  <div class="columns">
+    <div class="col-main">
+      <section>
+        <h3>projects</h3>
+        <p><a href="https://music-craft.snek.page/">music-craft</a> - a discovery game for finding new music through combinations</p>
+      </section>
+
+      <section>
+        <h3>games i've worked on during game jams</h3>
+        <p><a href="https://thesenpie.itch.io/disco-market">disco market</a>: a rhythm game where you build music loops on a supermarket conveyor</p>
+        <p><a href="https://www.youtube.com/watch?v=_iuoB34YHeE">overgrown</a>: a puzzle game where you have to control where roots grow by placing stones</p>
+        <p><a href="https://www.youtube.com/watch?v=3F5XY2uP92A">a "funny" detective visual novel</a></p>
+      </section>
+
+      <section>
+        <h3>blog <a href="/feed.xml" style="font-size: 12px; font-weight: normal;">(rss)</a></h3>
+        <p><a href="/posts/first-post.html">2026-01-18 - First Post</a></p>
+      </section>
+    </div>
+
+    <div class="col-side">
+      <section>
+        <h3>music</h3>
+        <iframe width="380" height="214" src="https://www.youtube.com/embed/TPYqrVDlc_4" frameborder="0" allowfullscreen style="max-width: 100%;"></iframe>
+      </section>
+    </div>
+  </div>
+  <div class="bg-art">
+    <img id="bg-img" src="" alt="art by aabx315">
+  </div>
+  <a href="https://x.com/aabx315" class="art-credit">art by aabx315</a>
+  <script>
+    const images = ['img/lilith1.webp', 'img/lilith2.webp'];
+    const bgImg = document.getElementById('bg-img');
+    const bgArt = document.querySelector('.bg-art');
+    const artCredit = document.querySelector('.art-credit');
+    bgImg.src = images[Math.floor(Math.random() * images.length)];
+
+    function checkPosition() {
+      const contentWidth = 900;
+      const imgWidth = bgImg.offsetWidth || 300;
+      const buffer = 40;
+      const hasRoom = window.innerWidth >= contentWidth + imgWidth + buffer;
+      bgArt.classList.toggle('at-bottom', !hasRoom);
+      artCredit.classList.toggle('at-bottom', !hasRoom);
+    }
+    window.addEventListener('resize', checkPosition);
+    bgImg.addEventListener('load', checkPosition);
+    checkPosition();
+  </script>
 </body>
 </html>
