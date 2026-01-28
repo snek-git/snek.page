@@ -5,18 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>film - snek.page</title>
   <style>
+    :root {
+      --bg: #fff;
+      --text: #222;
+      --link: #0066cc;
+      --visited: #551a8b;
+    }
+    :root.dark {
+      --bg: #2b2b2b;
+      --text: #e0e0e0;
+      --link: #8cb4ff;
+      --visited: #b8a0d8;
+    }
     body {
       padding: 1rem;
       max-width: 1200px;
       margin: 0 auto;
-      background: #2b2b2b;
-      color: #e0e0e0;
+      background: var(--bg);
+      color: var(--text);
     }
     a {
-      color: #8cb4ff;
+      color: var(--link);
     }
     a:visited {
-      color: #b8a0d8;
+      color: var(--visited);
+    }
+    .theme-toggle {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: var(--text);
+      color: var(--bg);
+      border: none;
+      padding: 0.3rem 0.6rem;
+      cursor: pointer;
+      font-size: 12px;
+      z-index: 10;
     }
     .back-link {
       margin-bottom: 1rem;
@@ -82,6 +106,7 @@
   </style>
 </head>
 <body>
+  <button class="theme-toggle" id="theme-toggle">dark</button>
   <div class="back-link"><a href="/">← back</a></div>
   <h1>film</h1>
   <div class="grid" id="grid">
@@ -115,6 +140,20 @@
     <span class="lightbox-next">&#10095;</span>
   </div>
   <script>
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    let isDark = localStorage.getItem('theme') === 'dark';
+    function applyTheme() {
+      document.documentElement.classList.toggle('dark', isDark);
+      themeToggle.textContent = isDark ? 'light' : 'dark';
+    }
+    applyTheme();
+    themeToggle.addEventListener('click', () => {
+      isDark = !isDark;
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      applyTheme();
+    });
+
     const grid = document.getElementById('grid');
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');

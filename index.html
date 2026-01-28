@@ -7,18 +7,18 @@
   <link rel="alternate" type="application/rss+xml" title="snek.page" href="/feed.xml">
   <style>
     :root {
-      --bg: #2b2b2b;
-      --text: #e0e0e0;
-      --link: #8cb4ff;
-      --visited: #b8a0d8;
-      --border: #555;
-    }
-    :root.light {
       --bg: #fff;
       --text: #222;
       --link: #0066cc;
       --visited: #551a8b;
       --border: #ccc;
+    }
+    :root.dark {
+      --bg: #2b2b2b;
+      --text: #e0e0e0;
+      --link: #8cb4ff;
+      --visited: #b8a0d8;
+      --border: #555;
     }
     body {
       padding: 1rem;
@@ -181,24 +181,24 @@
     const artCredit = document.querySelector('.art-credit');
     const themeToggle = document.getElementById('theme-toggle');
 
-    let isLight = localStorage.getItem('theme') === 'light';
+    let isDark = localStorage.getItem('theme') === 'dark';
 
     function getRandomImage() {
-      const images = isLight ? lightImages : darkImages;
+      const images = isDark ? darkImages : lightImages;
       return images[Math.floor(Math.random() * images.length)];
     }
 
     function applyTheme() {
-      document.documentElement.classList.toggle('light', isLight);
+      document.documentElement.classList.toggle('dark', isDark);
       bgImg.src = getRandomImage();
-      themeToggle.textContent = isLight ? 'dark' : 'light';
+      themeToggle.textContent = isDark ? 'light' : 'dark';
     }
 
     applyTheme();
 
     themeToggle.addEventListener('click', () => {
-      isLight = !isLight;
-      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      isDark = !isDark;
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
       applyTheme();
     });
 
@@ -260,7 +260,7 @@
     }
 
     function drawGol() {
-      const color = isLight ? '#222' : '#e0e0e0';
+      const color = isDark ? '#e0e0e0' : '#222';
       golCtx.fillStyle = 'transparent';
       golCtx.clearRect(0, 0, cols, rows);
       golCtx.fillStyle = color;
