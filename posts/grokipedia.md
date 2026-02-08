@@ -5,7 +5,15 @@ description: How Elon's shitty AI-only editorial system gets gamed into platform
 ---
 # Elon Musk's Grok Launders Genocide Denial
 
-I work with AI stuff daily. I'd heard about Grokipedia, Elon Musk's non-woke fully-AI-controlled clone of Wikipedia, and checked it out. Being Armenian, my first search was obviously the Armenian Genocide. It was pretty grim.
+I work with AI stuff daily. I'd heard about Grokipedia and checked it out.
+
+Grokipedia is xAI's AI-generated encyclopedia. Elon Musk announced it as "a massive improvement over Wikipedia" and "a necessary step towards the xAI goal of understanding the Universe." Whatever that means.
+
+![Elon Musk announcing Grokipedia](/img/grokipedia/announcement.jpg)
+
+Grok writes the articles, Grok reviews user-submitted edits, Grok decides what stays and what goes. No human editors, no human oversight.
+
+Being Armenian, my first search was obviously the Armenian Genocide. It was pretty grim.
 
 ## The Article
 
