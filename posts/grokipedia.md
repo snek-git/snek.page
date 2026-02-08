@@ -5,11 +5,12 @@ description: How Elon's shitty AI-only editorial system gets gamed into platform
 ---
 # Elon Musk's Grok Launders Genocide Denial
 
-I work with AI stuff daily. I'd heard about Grokipedia and checked it out.
+If you've heard about Elon Musk's [recent](https://www.npr.org/2025/07/09/nx-s1-5462609/grok-elon-musk-antisemitic-racist-content) [questionable](https://www.npr.org/2025/01/23/nx-s1-5269719/elon-musk-salute-inauguration-day-nazis) "[ventures](https://www.cnbc.com/2026/01/02/musk-grok-ai-bot-safeguard-sexualized-images-children.html)", Grokipedia was one of them. xAI's AI-generated encyclopedia. Elon Musk announced it as "a massive improvement over Wikipedia" and "a necessary step towards the xAI goal of understanding the Universe."
 
-Grokipedia is xAI's AI-generated encyclopedia. Elon Musk announced it as "a massive improvement over Wikipedia" and "a necessary step towards the xAI goal of understanding the Universe." Whatever that means.
-
-![Elon Musk announcing Grokipedia](/img/grokipedia/announcement.webp)
+<figure>
+<img src="/img/grokipedia/announcement.webp" alt="Elon Musk announcing Grokipedia">
+<figcaption style="font-size: 0.8em; opacity: 0.6; text-align: center;">whatever that means.</figcaption>
+</figure>
 
 Grok writes the articles, Grok reviews user-submitted edits, Grok decides what stays and what goes. No human editors, no human oversight.
 
@@ -35,9 +36,10 @@ The edit history shows a coordinated campaign. Same sources (McCarthy, Halaçoğ
 
 Here's the thing: **the system correctly rejected an edit to insert McCarthy's framing into the introduction. Twice. It identified McCarthy as controversial and the edit as biased.**
 
-![Rejected McCarthy edit](/img/grokipedia/edit4.webp)
-
-![Rejected McCarthy edit, second attempt](/img/grokipedia/edit2.webp)
+<div style="display: flex; gap: 1rem;">
+<img src="/img/grokipedia/edit4.webp" alt="Rejected McCarthy edit" style="flex: 1; max-width: 50%;">
+<img src="/img/grokipedia/edit2.webp" alt="Rejected McCarthy edit, second attempt" style="flex: 1; max-width: 50%;">
+</div>
 
 On the third submission with slightly adjusted wording, it approved it. Mehmet from Berlin has successfully prompt-injected Grok to manipulate the article about Armenian Genocide. 
 
