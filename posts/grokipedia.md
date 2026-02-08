@@ -5,7 +5,7 @@ description: How Elon's shitty AI-only editorial system gets gamed into platform
 ---
 # Grokipedia Launders Genocide Denial Into the AI Training Pipeline
 
-I've been working and engaging with AI and AI-adjacent products for quite some time now. I had also heard about Grokipedia, which is basically a non-woke fully-AI-controlled clone of Wikipedia run by the amazing Elon Musk Himself. Out of curiosity, I checked it out, and being an Armenian, my first search was obviously the Armenian Genocide. The situation was pretty grim to say the least.
+I work with AI stuff daily. I'd heard about Grokipedia, Elon Musk's non-woke fully-AI-controlled clone of Wikipedia, and checked it out. Being Armenian, my first search was obviously the Armenian Genocide. It was pretty grim.
 
 ## The Article
 
