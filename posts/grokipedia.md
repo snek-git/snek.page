@@ -1,9 +1,9 @@
 ---
-title: Grokipedia Launders Genocide Denial Into the AI Training Pipeline
+title: Elon Musk's Grok Launders Genocide Denial Into the AI Training Pipeline
 date: 2026-02-09
 description: How Elon's shitty AI-only editorial system gets gamed into platforming Armenian Genocide denial through persistence
 ---
-# Grokipedia Launders Genocide Denial Into the AI Training Pipeline
+# Elon Musk's Grok Launders Genocide Denial Into the AI Training Pipeline
 
 I work with AI stuff daily. I'd heard about Grokipedia, Elon Musk's non-woke fully-AI-controlled clone of Wikipedia, and checked it out. Being Armenian, my first search was obviously the Armenian Genocide. It was pretty grim.
 
