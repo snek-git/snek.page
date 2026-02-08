@@ -14,7 +14,7 @@ If you've heard about Elon Musk's [recent](https://www.npr.org/2025/07/09/nx-s1-
 
 Grok writes the articles, Grok reviews user-submitted edits, Grok decides what stays and what goes. No human editors, no human oversight.
 
-Being Armenian, my first search was obviously the Armenian Genocide. It was pretty grim.
+Being who I am, I checked the Armenian Genocide page out of curiosity.
 
 ## The Article
 
