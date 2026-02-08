@@ -9,7 +9,7 @@ I work with AI stuff daily. I'd heard about Grokipedia and checked it out.
 
 Grokipedia is xAI's AI-generated encyclopedia. Elon Musk announced it as "a massive improvement over Wikipedia" and "a necessary step towards the xAI goal of understanding the Universe." Whatever that means.
 
-![Elon Musk announcing Grokipedia](/img/grokipedia/announcement.jpg)
+![Elon Musk announcing Grokipedia](/img/grokipedia/announcement.webp)
 
 Grok writes the articles, Grok reviews user-submitted edits, Grok decides what stays and what goes. No human editors, no human oversight.
 
@@ -35,17 +35,17 @@ The edit history shows a coordinated campaign. Same sources (McCarthy, Halaçoğ
 
 Here's the thing: **the system correctly rejected an edit to insert McCarthy's framing into the introduction. Twice. It identified McCarthy as controversial and the edit as biased.**
 
-![Rejected McCarthy edit](/img/grokipedia/edit4.jpg)
+![Rejected McCarthy edit](/img/grokipedia/edit4.webp)
 
-![Rejected McCarthy edit, second attempt](/img/grokipedia/edit2.jpg)
+![Rejected McCarthy edit, second attempt](/img/grokipedia/edit2.webp)
 
 On the third submission with slightly adjusted wording, it approved it. Mehmet from Berlin has successfully prompt-injected Grok to manipulate the article about Armenian Genocide. 
 
-![Approved McCarthy edit, same content, different wording](/img/grokipedia/edit3.jpg)
+![Approved McCarthy edit, same content, different wording](/img/grokipedia/edit3.webp)
 
 The AI understood the edit was harmful. It explained why. Then it changed its mind because someone rephrased the same thing. 
 
-![Another approved edit, softening "assimilation" language](/img/grokipedia/edit1.jpg)
+![Another approved edit, softening "assimilation" language](/img/grokipedia/edit1.webp)
 
 Halaçoğlu's 56,000 figure was rejected as denialist in other contexts. It made it into the casualty section anyway under "diversity of Turkish scholarly views."
 
