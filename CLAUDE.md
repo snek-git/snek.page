@@ -1,80 +1,45 @@
-# snek.page
+# CLAUDE.md
 
-Personal website for Feliks/snek.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Structure
+## Overview
 
-```
-index.html          - main page
-film.html           - photo gallery
-feed.xml            - RSS feed (auto-generated)
-build.js            - generates post HTML, feed.xml, and updates blog links
-posts/
-  *.md              - blog post content (markdown with frontmatter)
-  *.html            - auto-generated from .md files
-img/
-  lilith1.webp      - background art dark mode
-  lilith2.webp
-  lilith1_light.webp - background art light mode
-  lilith2_light.webp
-  lilith3_light.webp - light mode only
-  film/             - full resolution photos
-  film/thumbs/      - thumbnails for gallery grid
-```
+Personal website for Feliks/snek. Static site with no framework — plain HTML, CSS, JS. The only build step is `node build.js`.
+
+## Commands
+
+- **Build:** `node build.js` — generates post HTML files, feed.xml, and updates blog links in index.html
+- **Dev server:** `python -m http.server` → localhost:8000
+- **Deploy:** `npx wrangler pages deploy . --project-name=snek-page` (or `bash deploy.sh` which runs build + deploy)
+- **Generate film thumbnails:** `for f in img/film/*.jpg; do magick "$f" -resize 500x500 -quality 80 "img/film/thumbs/$(basename "$f")"; done`
+
+## Architecture
+
+- **No dependencies** for the site itself. `build.js` uses only Node builtins (fs, path). Posts render markdown client-side via markdown-it CDN.
+- **build.js** reads `posts/*.md`, parses YAML-like frontmatter, generates an HTML shell for each post (`posts/*.html`), regenerates `feed.xml`, and regex-replaces the blog links section in `index.html`.
+- **Theme system:** CSS custom properties on `:root` / `:root.dark`. Theme toggle + localStorage persist across pages. Each page has its own inline theme toggle script (not shared).
+- **Background art** (index.html only): randomizes between image sets per theme. Repositions from fixed to static based on viewport width vs content width.
+- **Game of Life** (index.html only): interactive canvas animation at top of page.
+- **Film gallery** (film.html): grid with lightbox, keyboard nav, click-through to full-res via `data-full` attribute.
+- **Share page** (share.html): auto-generated file browser for `share/` directory. Hash-based navigation, client-side markdown rendering for `.md` files, direct download for other files.
+
+## Auto-generated files (don't edit by hand)
+
+- `posts/*.html` — generated from corresponding `.md` files
+- `feed.xml` — generated from all posts
+- `share.html` — generated from `share/` directory contents
+- Blog links section in `index.html` — replaced by build.js between `<h3>blog` and `</section>`
 
 ## Adding a Blog Post
 
-1. Create `posts/my-post.md` with frontmatter:
-   ```
-   ---
-   title: My Post Title
-   date: 2026-01-20
-   description: Short summary for RSS
-   ---
-
-   # My Post Title
-
-   Content here. Supports markdown + raw HTML for embeds.
-   ```
-
-2. Run `node build.js` - generates HTML, updates feed.xml and blog links
+1. Create `posts/my-post.md` with frontmatter (`title`, `date`, `description`)
+2. Run `node build.js`
 
 ## Adding Film Photos
 
-1. Add full-res images to `img/film/`
-
-2. Generate thumbnails:
-   ```
-   for f in img/film/*.jpg; do
-     magick "$f" -resize 500x500 -quality 80 "img/film/thumbs/$(basename "$f")"
-   done
-   ```
-
-3. Add to `film.html` grid:
-   ```html
-   <img src="img/film/thumbs/photo.jpg" data-full="img/film/photo.jpg" alt="">
-   ```
-
-## Local Development
-
-```
-python -m http.server
-```
-Then open `localhost:8000`
+1. Add full-res to `img/film/`, generate thumbnails to `img/film/thumbs/`
+2. Add `<img>` tag to `film.html` grid with `data-full` pointing to full-res
 
 ## Deployment
 
 Hosted on Cloudflare Pages. Build command: `node build.js`
-
-## Theme Toggle
-
-- Light mode default, dark mode toggle on all pages
-- Theme preference saved to localStorage
-- Background art swaps between light/dark variants
-- lilith3 only available in light mode
-
-## Background Art Behavior
-
-- Fixed in bottom-right corner when viewport is wide enough
-- Moves to bottom of page when viewport < content width + image width + 40px buffer
-- Randomizes between available images on each load
