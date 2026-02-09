@@ -71,4 +71,4 @@ Someone searching "Armenian Genocide casualties" could run into Halaçoğlu's 56
 
 And it's not hard to predict that Grok will use Grokipedia as its own knowledge base, if it doesn't already. A lot of people use Grok. More than I'd like, but they do, and they treat what it says as correct. If the ground truth is skewed, so is every answer Grok gives based on it. And so is every opinion formed by someone who trusted that answer.
 
-Nobody reads Grokipedia today. But the models trained on it will repeat it tomorrow.
+Nobody reads Grokipedia today. But the models trained on it will.
