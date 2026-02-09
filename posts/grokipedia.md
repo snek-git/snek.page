@@ -45,9 +45,7 @@ On the third submission with slightly adjusted wording, it approved it. Mehmet f
 
 ![Approved McCarthy edit, same content, different wording](/img/grokipedia/edit3.webp)
 
-The AI understood the edit was harmful. It explained why. Then it changed its mind because someone rephrased the same thing. 
-
-![Another approved edit, softening "assimilation" language](/img/grokipedia/edit1.webp)
+The AI understood the edit was harmful. It explained why. Then it changed its mind because someone rephrased the same thing.
 
 Halaçoğlu's 56,000 figure was rejected as denialist in other contexts. It made it into the casualty section anyway under "diversity of Turkish scholarly views."
 
