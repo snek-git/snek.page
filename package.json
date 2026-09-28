@@ -1,0 +1,10 @@
+{
+  "name": "snek.page",
+  "private": true,
+  "scripts": {
+    "build": "node build.js"
+  },
+  "devDependencies": {
+    "markdown-it": "^14.3.2"
+  }
+}

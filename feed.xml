@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>snek.page</title>
     <link>https://snek.page</link>
+    <atom:link href="https://snek.page/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Feliks / snek - ai engineer, games, thoughts</description>
     <language>en</language>
     <item>
-      <title>Elon Musk's Grok Launders Genocide Denial</title>
+      <title>Elon Musk&#39;s Grok Launders Genocide Denial</title>
       <link>https://snek.page/posts/grokipedia.html</link>
+      <guid isPermaLink="true">https://snek.page/posts/grokipedia.html</guid>
       <pubDate>Mon, 09 Feb 2026 00:00:00 GMT</pubDate>
-      <description>How Elon's shitty AI-only editorial system gets gamed into platforming Armenian Genocide denial through persistence</description>
+      <description>How Elon&#39;s shitty AI-only editorial system gets gamed into platforming Armenian Genocide denial through persistence</description>
     </item>
   </channel>
 </rss>

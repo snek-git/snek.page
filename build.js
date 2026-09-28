@@ -1,9 +1,21 @@
 const fs = require('fs');
 const path = require('path');
+const markdownit = require('markdown-it');
 
 const POSTS_DIR = './posts';
 const SHARE_DIR = './share';
 const SITE_URL = 'https://snek.page';
+
+const md = markdownit({ html: true, linkify: true, breaks: true });
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
 
 const POST_TEMPLATE = `<!DOCTYPE html>
 <html lang="en">
@@ -11,75 +23,27 @@ const POST_TEMPLATE = `<!DOCTYPE html>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{title}} - snek.page</title>
-  <link rel="alternate" type="application/rss+xml" title="snek.page" href="/feed.xml">
-  <script src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
+  <meta name="description" content="{{description}}">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="{{url}}">
+  <meta property="og:title" content="{{title}}">
+  <meta property="og:description" content="{{description}}">
+{{image}}  <link rel="alternate" type="application/rss+xml" title="snek.page" href="/feed.xml">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/theme.js"></script>
   <style>
-    :root {
-      --bg: #fff;
-      --text: #222;
-      --link: #0066cc;
-      --visited: #551a8b;
-      --code-bg: #f4f4f4;
-    }
-    :root.dark {
-      --bg: #2b2b2b;
-      --text: #e0e0e0;
-      --link: #8cb4ff;
-      --visited: #b8a0d8;
-      --code-bg: #1a1a1a;
-    }
-    body { padding: 1rem; max-width: 600px; margin: 0 auto; background: var(--bg); color: var(--text); }
-    a { color: var(--link); }
-    a:visited { color: var(--visited); }
-    pre { background: var(--code-bg); padding: 1rem; overflow-x: auto; }
-    code { background: var(--code-bg); padding: 0.2rem 0.4rem; }
-    pre code { padding: 0; }
-    img { max-width: 100%; height: auto; }
-    iframe { max-width: 100%; }
-    .back-link { margin-bottom: 1rem; }
-    .theme-toggle {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background: var(--text);
-      color: var(--bg);
-      border: none;
-      padding: 0.3rem 0.6rem;
-      cursor: pointer;
-      font-size: 12px;
-      z-index: 10;
-    }
+    body { max-width: 600px; margin: 0 auto; }
   </style>
 </head>
 <body>
-  <button class="theme-toggle" id="theme-toggle">dark</button>
+  <button class="theme-toggle" id="theme-toggle" aria-label="toggle theme"></button>
   <div class="back-link"><a href="/">← back</a></div>
-  <article id="content"></article>
-  <script>
-    // Theme toggle
-    const themeToggle = document.getElementById('theme-toggle');
-    let isDark = localStorage.getItem('theme') === 'dark';
-    function applyTheme() {
-      document.documentElement.classList.toggle('dark', isDark);
-      themeToggle.textContent = isDark ? 'light' : 'dark';
-    }
-    applyTheme();
-    themeToggle.addEventListener('click', () => {
-      isDark = !isDark;
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      applyTheme();
-    });
-
-    const md = window.markdownit({ html: true, linkify: true, breaks: true });
-    fetch('{{slug}}.md')
-      .then(r => r.text())
-      .then(text => {
-        const content = text.replace(/^---\\n[\\s\\S]*?\\n---\\n*/, '');
-        document.getElementById('content').innerHTML = md.render(content);
-      });
-  </script>
+  <article class="prose">
+{{content}}
+  </article>
 </body>
-</html>`;
+</html>
+`;
 
 function parseFrontmatter(content) {
   const match = content.match(/^---\n([\s\S]*?)\n---/);
@@ -103,29 +67,43 @@ function getPosts() {
     if (!meta.date) {
       meta.date = fs.statSync(filePath).mtime.toISOString().split('T')[0];
     }
-    return { ...meta, slug, file };
+    const body = content.replace(/^---\n[\s\S]*?\n---\n*/, '');
+    return { ...meta, slug, file, html: md.render(body) };
   }).filter(Boolean).sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
 function generatePostHTML(post) {
-  return POST_TEMPLATE
-    .replace(/{{title}}/g, post.title)
-    .replace(/{{slug}}/g, post.slug);
+  const image = post.image
+    ? `  <meta property="og:image" content="${escapeHtml(SITE_URL + post.image)}">\n  <meta name="twitter:card" content="summary_large_image">\n`
+    : '';
+  const fields = {
+    title: escapeHtml(post.title),
+    description: escapeHtml(post.description || ''),
+    url: `${SITE_URL}/posts/${post.slug}.html`,
+    image,
+    content: post.html,
+  };
+  return POST_TEMPLATE.replace(/{{(\w+)}}/g, (_, key) => fields[key]);
 }
 
 function generateRSS(posts) {
-  const items = posts.map(p => `    <item>
-      <title>${p.title}</title>
-      <link>${SITE_URL}/posts/${p.slug}.html</link>
+  const items = posts.map(p => {
+    const link = `${SITE_URL}/posts/${p.slug}.html`;
+    return `    <item>
+      <title>${escapeHtml(p.title)}</title>
+      <link>${link}</link>
+      <guid isPermaLink="true">${link}</guid>
       <pubDate>${new Date(p.date).toUTCString()}</pubDate>
-      <description>${p.description || ''}</description>
-    </item>`).join('\n');
+      <description>${escapeHtml(p.description || '')}</description>
+    </item>`;
+  }).join('\n');
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>snek.page</title>
     <link>${SITE_URL}</link>
+    <atom:link href="${SITE_URL}/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Feliks / snek - ai engineer, games, thoughts</description>
     <language>en</language>
 ${items}
@@ -136,18 +114,15 @@ ${items}
 
 function generateBlogLinks(posts) {
   return posts.map(p =>
-    `        <p><a href="/posts/${p.slug}.html">${p.date} - ${p.title}</a></p>`
+    `        <p><a href="/posts/${p.slug}.html">${p.date} - ${escapeHtml(p.title)}</a></p>`
   ).join('\n');
 }
 
 function updateIndex(posts) {
-  let html = fs.readFileSync('./index.html', 'utf-8');
-  const blogLinks = generateBlogLinks(posts);
-  html = html.replace(
-    /(<h3>blog.*?<\/h3>\n)([\s\S]*?)(<\/section>)/,
-    `$1${blogLinks}\n      $3`
-  );
-  fs.writeFileSync('./index.html', html);
+  const html = fs.readFileSync('./index.html', 'utf-8');
+  const pattern = /(<h3>blog.*?<\/h3>\n)([\s\S]*?)(<\/section>)/;
+  if (!pattern.test(html)) throw new Error('index.html: blog section not found');
+  fs.writeFileSync('./index.html', html.replace(pattern, `$1${generateBlogLinks(posts)}\n      $3`));
 }
 
 const SHARE_TEMPLATE = `<!DOCTYPE html>
@@ -156,48 +131,17 @@ const SHARE_TEMPLATE = `<!DOCTYPE html>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>share - snek.page</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/theme.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
   <style>
-    :root {
-      --bg: #fff;
-      --text: #222;
-      --link: #0066cc;
-      --visited: #551a8b;
-      --border: #ccc;
-      --code-bg: #f4f4f4;
-      --hover-bg: #f5f5f5;
-    }
-    :root.dark {
-      --bg: #2b2b2b;
-      --text: #e0e0e0;
-      --link: #8cb4ff;
-      --visited: #b8a0d8;
-      --border: #555;
-      --code-bg: #1a1a1a;
-      --hover-bg: #333;
-    }
-    body { padding: 1rem; max-width: 800px; margin: 0 auto; background: var(--bg); color: var(--text); }
-    a { color: var(--link); }
-    a:visited { color: var(--visited); }
-    .theme-toggle {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background: var(--text);
-      color: var(--bg);
-      border: none;
-      padding: 0.3rem 0.6rem;
-      cursor: pointer;
-      font-size: 12px;
-      z-index: 10;
-    }
-    .back-link { margin-bottom: 1rem; }
+    body { max-width: 800px; margin: 0 auto; }
     .breadcrumbs { margin-bottom: 1rem; font-size: 0.9em; }
     .breadcrumbs a { text-decoration: none; }
     .breadcrumbs .sep { margin: 0 0.3rem; color: var(--text); opacity: 0.5; }
     .file-list { list-style: none; padding: 0; margin: 0; }
     .file-list li { border-bottom: 1px solid var(--border); }
-    .file-list li a, .file-list li span.dl-row {
+    .file-list li a {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -205,39 +149,19 @@ const SHARE_TEMPLATE = `<!DOCTYPE html>
       text-decoration: none;
     }
     .file-list li:hover { background: var(--hover-bg); }
-    .file-list .size { color: #888; font-size: 0.85em; margin-left: 1rem; white-space: nowrap; }
+    .file-list .size { color: var(--muted); font-size: 0.85em; margin-left: 1rem; white-space: nowrap; }
     .file-list .name { overflow: hidden; text-overflow: ellipsis; }
-    .md-viewer { margin-top: 1rem; line-height: 1.6; }
-    .md-viewer pre { background: var(--code-bg); padding: 1rem; overflow-x: auto; }
-    .md-viewer code { background: var(--code-bg); padding: 0.2rem 0.4rem; }
-    .md-viewer pre code { padding: 0; }
-    .md-viewer img { max-width: 100%; }
-    .md-viewer blockquote { border-left: 3px solid var(--border); margin-left: 0; padding-left: 1rem; }
-    .md-viewer table { border-collapse: collapse; width: 100%; }
-    .md-viewer th, .md-viewer td { border: 1px solid var(--border); padding: 0.4rem 0.8rem; text-align: left; }
-    .empty { color: #888; font-style: italic; padding: 1rem 0; }
+    .prose { margin-top: 1rem; line-height: 1.6; }
+    .empty { color: var(--muted); font-style: italic; padding: 1rem 0; }
   </style>
 </head>
 <body>
-  <button class="theme-toggle" id="theme-toggle">dark</button>
+  <button class="theme-toggle" id="theme-toggle" aria-label="toggle theme"></button>
   <div class="back-link"><a href="/">&larr; back</a></div>
   <h1>share</h1>
   <div class="breadcrumbs" id="breadcrumbs"></div>
   <div id="content"></div>
   <script>
-    const themeToggle = document.getElementById('theme-toggle');
-    let isDark = localStorage.getItem('theme') === 'dark';
-    function applyTheme() {
-      document.documentElement.classList.toggle('dark', isDark);
-      themeToggle.textContent = isDark ? 'light' : 'dark';
-    }
-    applyTheme();
-    themeToggle.addEventListener('click', () => {
-      isDark = !isDark;
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      applyTheme();
-    });
-
     const FILE_TREE = {{FILE_TREE}};
     const md = window.markdownit({ html: true, linkify: true, breaks: true });
     const content = document.getElementById('content');
@@ -303,7 +227,7 @@ const SHARE_TEMPLATE = `<!DOCTYPE html>
         const resp = await fetch('share' + p);
         const text = await resp.text();
         const cleaned = text.replace(/^---\\n[\\s\\S]*?\\n---\\n*/, '');
-        content.innerHTML = '<div class="md-viewer">' + md.render(cleaned) + '</div>';
+        content.innerHTML = '<div class="prose">' + md.render(cleaned) + '</div>';
       } catch (e) {
         content.innerHTML = '<p>Failed to load file.</p>';
       }
@@ -353,7 +277,6 @@ function generateSharePage(tree) {
 
 const posts = getPosts();
 
-// Generate HTML for each post
 posts.forEach(post => {
   const htmlPath = path.join(POSTS_DIR, `${post.slug}.html`);
   fs.writeFileSync(htmlPath, generatePostHTML(post));
@@ -364,7 +287,6 @@ fs.writeFileSync('./feed.xml', generateRSS(posts));
 updateIndex(posts);
 console.log(`Built ${posts.length} posts`);
 
-// Generate share page
 if (fs.existsSync(SHARE_DIR)) {
   const shareTree = { name: 'share', type: 'directory', children: scanDirectory(SHARE_DIR) };
   fs.writeFileSync('./share.html', generateSharePage(shareTree));

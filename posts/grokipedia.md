@@ -2,6 +2,7 @@
 title: Elon Musk's Grok Launders Genocide Denial
 date: 2026-02-09
 description: How Elon's shitty AI-only editorial system gets gamed into platforming Armenian Genocide denial through persistence
+image: /img/grokipedia/announcement.jpg
 ---
 # Elon Musk's Grok Launders Genocide Denial
 
