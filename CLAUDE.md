@@ -22,6 +22,7 @@ Personal website for Feliks/snek. Static site with no framework: plain HTML, CSS
 - **Background art** (index.html only): picks a random image per theme, swaps on `themechange`. Repositions from fixed to static based on viewport width vs content width.
 - **Game of Life** (index.html only): interactive canvas at top of page. Pointer events, pauses when the tab is hidden, static under `prefers-reduced-motion`.
 - **Film gallery** (film.html): grid with lazy thumbs and a lightbox that loads `data-display` (2000px) with a "full res" link to `data-full`.
+- **404 page** (404.html): Fate-themed. Pages serves it for any unknown path, so all its asset URLs must be absolute. The servant stats come from a hash of the path. Art goes in `img/404.webp` (the `<img>` removes itself if the file is missing). The summon pool is a hardcoded list in the page; update it when projects change.
 - **Share page** (share.html): auto-generated file browser for `share/`. Hash-based navigation, client-side markdown rendering for `.md` files (markdown-it CDN), direct download for other files. Link files as `snek.page/share.html#/path/to/file.md`.
 
 ## Auto-generated files (don't edit by hand)
